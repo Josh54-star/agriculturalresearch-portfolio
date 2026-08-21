@@ -1,0 +1,3 @@
+term,estimate,robust_se,statistic,p_value
+(Intercept),1272.259955,47.746122,26.646352,1.9727e-156
+I(year - 1960),10.259014,1.816784,5.646798,1.63463e-08

@@ -69,6 +69,6 @@ Selected training includes the **Google Data Analytics Professional Certificate*
 Kenya  
 📧 **joshuamasika@hotmail.com**  
 📱 **+254 797 810 541**  
-🔗 **Research Portfolio:** https://github.com/Josh54-star/agriculturalresearch-portfolio
+🔗 **Research Portfolio:** https://github.com/Josh54-star/agri-research
 
 For professional opportunities, research collaboration, or questions about a project, please contact me using the details above.

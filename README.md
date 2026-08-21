@@ -2,11 +2,11 @@
 
 ## Masika M. Joshua
 
-**Agricultural Research | Data Analysis | Econometrics | Food Systems | Impact Evaluation**
+**Agricultural Research | Data Analysis | Applied Econometrics | Food Systems**
 
 I am an agricultural researcher and data-oriented professional with more than four years of experience across agricultural research, extension, farmer data collection, agribusiness, youth agricultural development, and applied research.
 
-My work sits at the intersection of **agriculture, food systems, quantitative research, and evidence-based policy**. I am particularly interested in using data and applied econometric methods to understand agricultural adoption, productivity, food security, livelihoods, and the impacts of development interventions.
+My work sits at the intersection of **agriculture, food systems, quantitative research, and evidence-based policy**. I am particularly interested in using data and applied analytical methods to understand agricultural adoption, productivity, food security, livelihoods, and development interventions.
 
 ### Research interests
 
@@ -14,7 +14,7 @@ My work sits at the intersection of **agriculture, food systems, quantitative re
 - Climate-smart and agroecological agriculture
 - Smallholder farmer livelihoods and productivity
 - Food security and nutrition
-- Agricultural extension and technology/practice adoption
+- Agricultural extension and practice adoption
 - Impact evaluation and causal inference
 - Applied econometrics and policy analysis
 - Reproducible research and data-driven decision-making
@@ -23,23 +23,26 @@ My work sits at the intersection of **agriculture, food systems, quantitative re
 
 | Area | Tools / Methods |
 |---|---|
-| Statistical analysis | R, Stata, Python, Excel |
-| Econometrics | Regression, panel-data methods, causal inference, impact evaluation |
-| Research | Survey design, quantitative analysis, qualitative research, literature synthesis |
-| Data | Cleaning, transformation, exploratory analysis, visualization |
+| Statistical analysis | R, Stata, Excel |
+| Data handling | Data cleaning, transformation, descriptive analysis, visualization |
+| Econometrics | Regression analysis, panel-data concepts, impact-evaluation methods |
+| Research | Survey design, quantitative research, qualitative research, literature synthesis |
 | Reproducibility | Git, GitHub, documented analytical workflows |
 | Data collection | KoboToolbox / Kobo Collect, structured questionnaires |
+| Supporting tools | Python for basic data handling and workflow support |
+
+> My strongest foundation is agricultural research and applied quantitative analysis. My R and GitHub skills are developing through reproducible portfolio projects, supported by the Google Data Analytics Professional Certificate and its R programming capstone.
 
 ### Selected projects
 
-| Project | Focus | Methods / Tools |
+| Project | Focus | Current evidence |
 |---|---|---|
-| [Agroecological Practices & Food Security](projects/agroecology-food-security/README.md) | Practice adoption, production diversity and household food security | R / Stata, econometrics |
-| [Climate-Smart Agriculture & Poultry](projects/climate-smart-poultry/README.md) | Climate-smart practice adoption, poultry productivity and household income | Applied econometrics, survey research |
-| [Agricultural Data Analysis](projects/agricultural-data-analysis/README.md) | Reproducible analysis of agricultural data | R / Python / visualization |
-| [Impact Evaluation](projects/impact-evaluation/README.md) | Evaluation of agricultural/development interventions | Causal inference, Difference-in-Differences |
+| [Agricultural Data Analysis](projects/agricultural-data-analysis/README.md) | Kenya maize-yield analysis using public data | Completed R workflow with tables, figures and regression output |
+| [Agroecological Practices & Food Security](projects/agroecology-food-security/README.md) | Practice bundles, production diversity and household food security | Research design and planned analytical framework |
+| [Climate-Smart Agriculture & Poultry](projects/climate-smart-poultry/README.md) | Climate-smart practice adoption, poultry productivity and household income | Research design and planned analytical framework |
+| [Impact Evaluation](projects/impact-evaluation/README.md) | Evaluation of agricultural/development interventions | Planned public-data Difference-in-Differences project |
 
-> Project repositories will be developed progressively. Where analysis uses public datasets, sources and licenses will be documented. Research projects based on ongoing or unpublished work will clearly distinguish completed findings from proposed analytical approaches.
+The portfolio deliberately distinguishes **completed empirical analysis from proposed research designs**. Results are only presented where an analysis has actually been conducted using a documented dataset.
 
 ### Experience highlights
 
@@ -52,7 +55,7 @@ My work sits at the intersection of **agriculture, food systems, quantitative re
 
 ### Reproducible research
 
-This portfolio is designed to make my analytical work transparent and reproducible. Each project will document its research question, data source, methodology, analytical workflow, outputs, limitations, and implications.
+This portfolio is being developed to make my analytical work transparent and reproducible. Projects document the research question, data source, methodology, analytical workflow, outputs, limitations, and implications.
 
 ### Certificates & training
 

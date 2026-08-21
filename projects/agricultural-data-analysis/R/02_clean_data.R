@@ -1,40 +1,26 @@
 # 02_clean_data.R
-# Data audit, validation and transformation.
+# Data audit and transformation for the real public dataset.
 
 library(dplyr)
+library(readr)
 
-input_file <- "projects/agricultural-data-analysis/data/agricultural_demo.csv"
+input_file <- "projects/agricultural-data-analysis/data/agricultural_real_raw.csv"
 output_file <- "projects/agricultural-data-analysis/data/agricultural_clean.csv"
 
-raw <- read.csv(input_file, stringsAsFactors = FALSE)
+raw <- read_csv(input_file, show_col_types = FALSE)
 
-# Basic structural audit
 stopifnot(nrow(raw) > 0)
-stopifnot(!anyDuplicated(raw[c("farm_id", "year")]))
+stopifnot(!anyDuplicated(raw$year))
+stopifnot(all(raw$year == as.integer(raw$year)))
+stopifnot(all(raw$maize_yield_kg_ha > 0))
 
-# Validate plausible ranges and create analysis-ready variables.
 clean <- raw %>%
+  arrange(year) %>%
   mutate(
-    county = trimws(county),
     year = as.integer(year),
-    improved_seed = as.integer(improved_seed),
-    extension_contact = as.integer(extension_contact),
-    log_income = log1p(gross_farm_income_kes),
-    yield_group = case_when(
-      maize_yield_t_ha < 2 ~ "Low",
-      maize_yield_t_ha < 4 ~ "Medium",
-      TRUE ~ "High"
-    )
-  ) %>%
-  filter(
-    farm_size_ha > 0,
-    rainfall_mm > 0,
-    fertilizer_kg_ha >= 0,
-    maize_yield_t_ha > 0,
-    gross_farm_income_kes >= 0
+    decade = paste0(floor(year / 10) * 10, "s")
   )
 
-write.csv(clean, output_file, row.names = FALSE)
-
+write_csv(clean, output_file)
 cat("Rows retained:", nrow(clean), "\n")
-cat("Columns:", ncol(clean), "\n")
+cat("Years:", min(clean$year), "-", max(clean$year), "\n")

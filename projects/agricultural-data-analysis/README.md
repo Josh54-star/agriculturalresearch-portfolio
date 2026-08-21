@@ -1,135 +1,76 @@
 # Agricultural Data Analysis
 
-## Reproducible R workflow for agricultural research
+## Kenya maize-yield analysis using a reproducible R workflow
 
-### Project objective
-
-This project demonstrates a complete research-oriented workflow for analysing agricultural data: **data generation/acquisition → data audit → cleaning → exploratory analysis → visualization → regression modelling → interpretation**.
-
-The first version uses a **synthetic farm-level panel-style dataset** so that the complete workflow can be published without exposing confidential farmer information or inventing empirical findings. The same structure can later be connected to a documented public dataset.
+This project is an end-to-end agricultural data-analysis workflow using a public Kenya maize-yield time series. It covers data acquisition, validation, cleaning, exploratory analysis, visualization, regression modelling, robust inference, and reporting.
 
 ### Research question
 
-> Which farm and production characteristics are associated with differences in maize productivity and gross farm income?
+> How has maize yield in Kenya changed over time, and what does the historical trend show about agricultural productivity?
 
-The demonstration considers rainfall, fertilizer use, improved seed, extension contact and farm size as explanatory variables.
+This is a descriptive time-series analysis. It does not estimate causal effects.
 
 ### Dataset
 
-The demonstration dataset contains repeated observations for 500 synthetic farms across 2019–2024. Variables include:
+Annual Kenya maize yield observations for **1960–2010**, measured in kg/ha. The reproducible CSV snapshot is `data/kenya_maize_yield.csv`. The public source identifies the FAOSTAT item **“Maize (corn)”**.
 
-- `farm_id` — synthetic farm identifier
-- `year` — observation year
-- `county` — synthetic county assignment
-- `farm_size_ha` — farm area in hectares
-- `rainfall_mm` — annual rainfall measure
-- `fertilizer_kg_ha` — fertilizer application rate
-- `improved_seed` — indicator for improved seed use
-- `extension_contact` — indicator for extension contact
-- `maize_yield_t_ha` — maize yield in tonnes per hectare
-- `production_t` — estimated production in tonnes
-- `gross_farm_income_kes` — synthetic gross farm income
-
-### Analytical workflow
+### Workflow
 
 ```text
-01_generate_demo_data.R
-        ↓
-02_clean_data.R
-        ↓
-03_explore_data.R
-        ↓
-04_model.R
+01_load_real_data.R → 02_clean_data.R → 03_explore_data.R → 04_model.R → 05_export_results.R
 ```
 
-The complete sequence can be executed through `00_run_analysis.R`.
-
-### 1. Data generation / acquisition
-
-`01_generate_demo_data.R` creates a reproducible demonstration dataset using a fixed random seed. This makes the project executable without relying on proprietary data.
-
-For a real research application, this stage would instead import a documented public or approved research dataset and preserve its provenance.
-
-### 2. Data cleaning and validation
-
-`02_clean_data.R` performs structural checks, including duplicate farm-year detection, type conversion, plausible-value filtering, and construction of analysis variables.
-
-The workflow illustrates an important research principle: **data-cleaning decisions should be explicit and reproducible rather than performed manually without documentation.**
-
-### 3. Exploratory data analysis
-
-`03_explore_data.R` produces overall descriptive statistics, county-level summaries, yield distributions, and yield comparisons across counties.
-
-The exploratory stage is used to understand the data before specifying regression models.
-
-### 4. Regression analysis
-
-`04_model.R` estimates two demonstration linear models.
-
-**Model 1: agricultural productivity**
-
-`maize_yield_t_ha ~ rainfall_mm + fertilizer_kg_ha + improved_seed + extension_contact + farm_size_ha`
-
-**Model 2: gross farm income**
-
-`log_income ~ maize_yield_t_ha + farm_size_ha + improved_seed + extension_contact`
-
-These models are **illustrative associations generated from synthetic data**. They should not be interpreted as causal estimates.
-
-### Why this matters for agricultural research
-
-The workflow demonstrates transferable skills in:
-
-- translating research questions into measurable variables;
-- structuring farm-level data;
-- checking data quality;
-- producing descriptive evidence;
-- visualizing agricultural outcomes;
-- specifying and interpreting regression models;
-- distinguishing association from causal inference; and
-- maintaining a reproducible analytical pipeline.
-
-### R skills demonstrated
-
-- `dplyr` for data transformation and summaries
-- `ggplot2` for visualization
-- Base R for data generation and modelling
-- Script modularization using `source()`
-- Reproducible random-number generation
-- Linear regression using `lm()`
-- Export of analytical outputs
-
-### Reproducibility
-
-Run from the repository root:
+Run the complete workflow with:
 
 ```r
 source("projects/agricultural-data-analysis/R/00_run_analysis.R")
 ```
 
-Required packages:
+### Descriptive results
 
-```r
-install.packages(c("dplyr", "ggplot2"))
-```
+| Statistic | Value |
+|---|---:|
+| Observations | 51 |
+| Period | 1960–2010 |
+| Mean yield | 1,528.7 kg/ha |
+| Median yield | 1,512.6 kg/ha |
+| Minimum | 1,071.3 kg/ha |
+| Maximum | 2,071.2 kg/ha |
+| Standard deviation | 266.1 kg/ha |
+
+The highest decade average in the series occurs in the 1980s at approximately **1,775 kg/ha**.
+
+### Regression analysis
+
+The project estimates:
+
+`maize_yield_kg_ha = β0 + β1(year − 1960) + ε`
+
+The estimated historical trend is **10.26 kg/ha per year**, equivalent to about **102.6 kg/ha per decade**. The heteroskedasticity-robust p-value is approximately **1.63 × 10⁻⁸** and R² is **0.328**.
+
+The estimate describes a historical association with time. It should not be interpreted as evidence that time itself caused higher yields; weather, varieties, inputs, markets, institutions and policy also changed during the period.
+
+### Outputs
+
+- `outputs/tables/summary_statistics.csv`
+- `outputs/tables/decade_summary.csv`
+- `outputs/tables/trend_model.csv`
+- `outputs/tables/model_fit.csv`
+- `outputs/results.md`
+- `outputs/figures/maize_yield_trend.svg`
+
+### R skills demonstrated
+
+`readr`, `dplyr`, `ggplot2`, `lm()`, `sandwich`, robust inference, modular scripts, reproducible outputs, and distinction between association and causal inference.
 
 ### Data provenance
 
-The demonstration data are synthetic and generated by the project itself. No synthetic result is presented as real-world evidence.
-
-A future public-data version will document the external dataset, access date, licence, transformations, and source link. FAOSTAT is one potential source because it provides internationally comparable agriculture statistics.
+The project stores an analysis-ready snapshot of a public FAOSTAT-derived Kenya crop-yield series so that the analysis can be reproduced without requiring an API connection at run time.
 
 ### Limitations
 
-The current dataset is synthetic. Therefore:
-
-- coefficients do not represent real agricultural relationships;
-- statistical significance should not be interpreted substantively;
-- the project does not establish causal effects; and
-- results cannot be generalized to Kenyan farmers or another population.
+The analysis is national-level and annual, the simple trend model does not identify mechanisms, and the current snapshot ends in 2010. A future iteration can extend the series and add documented covariates such as rainfall, fertilizer use, prices, and policy periods.
 
 ### Project status
 
-**Analytical workflow implemented.**
-
-Next iteration: replace the demonstration dataset with a documented public agricultural dataset and add model diagnostics, uncertainty visualization, and a publication-style analytical report.
+**Real-data analytical project completed.**

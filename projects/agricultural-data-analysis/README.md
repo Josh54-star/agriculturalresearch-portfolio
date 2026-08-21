@@ -1,55 +1,135 @@
 # Agricultural Data Analysis
 
-## Reproducible data-analysis project
+## Reproducible R workflow for agricultural research
 
-### Purpose
+### Project objective
 
-This project demonstrates a practical workflow for turning agricultural data into interpretable evidence for research and decision-making.
+This project demonstrates a complete research-oriented workflow for analysing agricultural data: **data generation/acquisition → data audit → cleaning → exploratory analysis → visualization → regression modelling → interpretation**.
 
-The emphasis is on **data quality, transparent analysis, visualization, and interpretation** rather than producing charts without a research question.
+The first version uses a **synthetic farm-level panel-style dataset** so that the complete workflow can be published without exposing confidential farmer information or inventing empirical findings. The same structure can later be connected to a documented public dataset.
 
-### Workflow
+### Research question
+
+> Which farm and production characteristics are associated with differences in maize productivity and gross farm income?
+
+The demonstration considers rainfall, fertilizer use, improved seed, extension contact and farm size as explanatory variables.
+
+### Dataset
+
+The demonstration dataset contains repeated observations for 500 synthetic farms across 2019–2024. Variables include:
+
+- `farm_id` — synthetic farm identifier
+- `year` — observation year
+- `county` — synthetic county assignment
+- `farm_size_ha` — farm area in hectares
+- `rainfall_mm` — annual rainfall measure
+- `fertilizer_kg_ha` — fertilizer application rate
+- `improved_seed` — indicator for improved seed use
+- `extension_contact` — indicator for extension contact
+- `maize_yield_t_ha` — maize yield in tonnes per hectare
+- `production_t` — estimated production in tonnes
+- `gross_farm_income_kes` — synthetic gross farm income
+
+### Analytical workflow
 
 ```text
-Raw data
-   ↓
-Data audit & documentation
-   ↓
-Cleaning & transformation
-   ↓
-Exploratory analysis
-   ↓
-Statistical modelling
-   ↓
-Visualization
-   ↓
-Interpretation & reporting
+01_generate_demo_data.R
+        ↓
+02_clean_data.R
+        ↓
+03_explore_data.R
+        ↓
+04_model.R
 ```
 
-### Planned components
+The complete sequence can be executed through `00_run_analysis.R`.
 
-- Data dictionary
-- Missing-data assessment
-- Variable validation
-- Descriptive statistics
-- Distribution analysis
-- Group comparisons
-- Correlation analysis
-- Regression analysis
-- Publication-quality visualizations
-- Reproducible scripts
+### 1. Data generation / acquisition
 
-### Tools
+`01_generate_demo_data.R` creates a reproducible demonstration dataset using a fixed random seed. This makes the project executable without relying on proprietary data.
 
-- **R** for statistical analysis and visualization
-- **Python** for data preparation and analytical workflows where appropriate
-- **Excel** for exploratory data handling and presentation
-- **Git/GitHub** for version control and reproducibility
+For a real research application, this stage would instead import a documented public or approved research dataset and preserve its provenance.
 
-### Research orientation
+### 2. Data cleaning and validation
 
-The analysis will use an agricultural or development dataset with a clearly documented public source. The final project will state the data provenance, licence/access conditions, research question, methods, limitations, and interpretation of results.
+`02_clean_data.R` performs structural checks, including duplicate farm-year detection, type conversion, plausible-value filtering, and construction of analysis variables.
 
-### Status
+The workflow illustrates an important research principle: **data-cleaning decisions should be explicit and reproducible rather than performed manually without documentation.**
 
-**Portfolio project — dataset and analysis pipeline to be added.**
+### 3. Exploratory data analysis
+
+`03_explore_data.R` produces overall descriptive statistics, county-level summaries, yield distributions, and yield comparisons across counties.
+
+The exploratory stage is used to understand the data before specifying regression models.
+
+### 4. Regression analysis
+
+`04_model.R` estimates two demonstration linear models.
+
+**Model 1: agricultural productivity**
+
+`maize_yield_t_ha ~ rainfall_mm + fertilizer_kg_ha + improved_seed + extension_contact + farm_size_ha`
+
+**Model 2: gross farm income**
+
+`log_income ~ maize_yield_t_ha + farm_size_ha + improved_seed + extension_contact`
+
+These models are **illustrative associations generated from synthetic data**. They should not be interpreted as causal estimates.
+
+### Why this matters for agricultural research
+
+The workflow demonstrates transferable skills in:
+
+- translating research questions into measurable variables;
+- structuring farm-level data;
+- checking data quality;
+- producing descriptive evidence;
+- visualizing agricultural outcomes;
+- specifying and interpreting regression models;
+- distinguishing association from causal inference; and
+- maintaining a reproducible analytical pipeline.
+
+### R skills demonstrated
+
+- `dplyr` for data transformation and summaries
+- `ggplot2` for visualization
+- Base R for data generation and modelling
+- Script modularization using `source()`
+- Reproducible random-number generation
+- Linear regression using `lm()`
+- Export of analytical outputs
+
+### Reproducibility
+
+Run from the repository root:
+
+```r
+source("projects/agricultural-data-analysis/R/00_run_analysis.R")
+```
+
+Required packages:
+
+```r
+install.packages(c("dplyr", "ggplot2"))
+```
+
+### Data provenance
+
+The demonstration data are synthetic and generated by the project itself. No synthetic result is presented as real-world evidence.
+
+A future public-data version will document the external dataset, access date, licence, transformations, and source link. FAOSTAT is one potential source because it provides internationally comparable agriculture statistics.
+
+### Limitations
+
+The current dataset is synthetic. Therefore:
+
+- coefficients do not represent real agricultural relationships;
+- statistical significance should not be interpreted substantively;
+- the project does not establish causal effects; and
+- results cannot be generalized to Kenyan farmers or another population.
+
+### Project status
+
+**Analytical workflow implemented.**
+
+Next iteration: replace the demonstration dataset with a documented public agricultural dataset and add model diagnostics, uncertainty visualization, and a publication-style analytical report.

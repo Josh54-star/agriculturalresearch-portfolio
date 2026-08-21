@@ -1,68 +1,49 @@
 # 03_explore_data.R
-# Exploratory analysis and summary statistics.
+# Descriptive analysis and visualization of Kenya maize yield.
 
 library(dplyr)
 library(ggplot2)
+library(readr)
 
-input_file <- "projects/agricultural-data-analysis/data/agricultural_clean.csv"
+df <- read_csv("projects/agricultural-data-analysis/data/agricultural_clean.csv", show_col_types = FALSE)
+dir.create("projects/agricultural-data-analysis/outputs/figures", recursive = TRUE, showWarnings = FALSE)
+dir.create("projects/agricultural-data-analysis/outputs/tables", recursive = TRUE, showWarnings = FALSE)
 
-farm_data <- read.csv(input_file, stringsAsFactors = FALSE)
-
-# Overall descriptive statistics
-summary_stats <- farm_data %>%
+summary_stats <- df %>%
   summarise(
-    observations = n(),
-    farms = n_distinct(farm_id),
-    mean_farm_size_ha = mean(farm_size_ha),
-    mean_yield_t_ha = mean(maize_yield_t_ha),
-    median_yield_t_ha = median(maize_yield_t_ha),
-    mean_income_kes = mean(gross_farm_income_kes),
-    extension_contact_rate = mean(extension_contact),
-    improved_seed_rate = mean(improved_seed)
+    n = n(),
+    start_year = min(year),
+    end_year = max(year),
+    mean_yield_kg_ha = mean(maize_yield_kg_ha),
+    median_yield_kg_ha = median(maize_yield_kg_ha),
+    min_yield_kg_ha = min(maize_yield_kg_ha),
+    max_yield_kg_ha = max(maize_yield_kg_ha),
+    sd_yield_kg_ha = sd(maize_yield_kg_ha)
   )
+write_csv(summary_stats, "projects/agricultural-data-analysis/outputs/tables/summary_statistics.csv")
 
-print(summary_stats)
-
-# County-level production summary
-county_summary <- farm_data %>%
-  group_by(county) %>%
+decade_summary <- df %>%
+  group_by(decade) %>%
   summarise(
-    observations = n(),
-    mean_yield_t_ha = mean(maize_yield_t_ha),
-    mean_income_kes = mean(gross_farm_income_kes),
+    mean_yield_kg_ha = mean(maize_yield_kg_ha),
+    min_yield_kg_ha = min(maize_yield_kg_ha),
+    max_yield_kg_ha = max(maize_yield_kg_ha),
+    sd_yield_kg_ha = sd(maize_yield_kg_ha),
+    n = n(),
     .groups = "drop"
-  ) %>%
-  arrange(desc(mean_yield_t_ha))
+  )
+write_csv(decade_summary, "projects/agricultural-data-analysis/outputs/tables/decade_summary.csv")
 
-print(county_summary)
-
-# Distribution of yield
-p_yield <- ggplot(farm_data, aes(x = maize_yield_t_ha)) +
-  geom_histogram(bins = 30) +
+p <- ggplot(df, aes(year, maize_yield_kg_ha)) +
+  geom_line() +
+  geom_point(size = 1.5) +
   labs(
-    title = "Distribution of Maize Yield",
-    x = "Maize yield (tonnes/ha)",
-    y = "Number of farm-year observations"
+    title = "Kenya maize yield, 1960–2011",
+    x = "Year",
+    y = "Maize yield (kg/ha)"
   ) +
   theme_minimal()
 
-ggsave(
-  "projects/agricultural-data-analysis/outputs/yield_distribution.png",
-  p_yield, width = 8, height = 5, dpi = 300
-)
+ggsave("projects/agricultural-data-analysis/outputs/figures/maize_yield_trend.png", p, width = 9, height = 5.5, dpi = 300)
 
-# Yield by county
-p_county <- ggplot(farm_data, aes(x = reorder(county, maize_yield_t_ha, FUN = median), y = maize_yield_t_ha)) +
-  geom_boxplot() +
-  coord_flip() +
-  labs(
-    title = "Maize Yield Distribution by County",
-    x = "County",
-    y = "Maize yield (tonnes/ha)"
-  ) +
-  theme_minimal()
-
-ggsave(
-  "projects/agricultural-data-analysis/outputs/yield_by_county.png",
-  p_county, width = 8, height = 5, dpi = 300
-)
+cat("Exploratory analysis completed.\n")
